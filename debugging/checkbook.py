@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 class Checkbook:
     def __init__(self):
         self.balance = 0.0
@@ -18,34 +20,40 @@ class Checkbook:
     def get_balance(self):
         print("Current Balance: ${:.2f}".format(self.balance))
 
+
+def get_amount(prompt):
+    while True:
+        value = input(prompt)
+        try:
+            amount = float(value)
+            if amount < 0:
+                print("Please enter a positive number.")
+                continue
+            return amount
+        except ValueError:
+            print("Invalid input. Please enter a numeric value.")
+
+
 def main():
     cb = Checkbook()
+
     while True:
-        action = input("What would you like to do? (deposit, withdraw, balance, exit): ")
-        if action.lower() == 'exit':
+        action = input("What would you like to do? (deposit, withdraw, balance, exit): ").lower()
+
+        if action == "exit":
+            print("Goodbye!")
             break
-        elif action.lower() == 'deposit':
-            try:
-                amount = float(input("Enter the amount to deposit: $"))
-                if amount < 0:
-                    print("Amount must be positive. Please try again.")
-                else:
-                    cb.deposit(amount)
-            except ValueError:
-                print("Invalid input. Please enter a valid number.")
-        elif action.lower() == 'withdraw':
-            try:
-                amount = float(input("Enter the amount to withdraw: $"))
-                if amount < 0:
-                    print("Amount must be positive. Please try again.")
-                else:
-                    cb.withdraw(amount)
-            except ValueError:
-                print("Invalid input. Please enter a valid number.")
-        elif action.lower() == 'balance':
+        elif action == "deposit":
+            amount = get_amount("Enter the amount to deposit: $")
+            cb.deposit(amount)
+        elif action == "withdraw":
+            amount = get_amount("Enter the amount to withdraw: $")
+            cb.withdraw(amount)
+        elif action == "balance":
             cb.get_balance()
         else:
             print("Invalid command. Please try again.")
+
 
 if __name__ == "__main__":
     main()
